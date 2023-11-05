@@ -5,69 +5,6 @@ local_lib = File.join(File.dirname(__FILE__), '../share/lops/lib');
 $LOAD_PATH << local_lib
 require 'common'
 
-
-def derivation?(fname)
-    File.file?(fname) &&
-        File.extname(fname) == '.drv'
-end
-
-def json?(fname)
-    File.file?(fname) &&
-        File.extname(fname) == '.json'
-end
-
-def built?(fname)
-    File.dir?(fname) &&
-        File.file?(File.join(fname, "info.json"))
-end
-
-
-# log the given argument to stderr if verbose mode is on
-def log_verbose(*args)
-    if @verbose_script
-        $stderr.puts args.join(' ')
-    end
-end
-
-# Run a command, logging it first if verbose mode is on
-def run_cmd(*args)
-    env = args.shift if args.first.is_a? Hash
-    log_verbose '$', *args
-    system(env || {}, *args)
-end
-
-def pipe_cmd(*args)
-    env = args.shift if args.first.is_a? Hash
-    log_verbose '$', *args
-    IO.popen(env || {}, args, 'r') {|p| p.read.strip }
-end
-
-def build_host_cmd(*args)
-    if @build_host.nil? then
-        run_cmd *args
-    else
-        ssh_opts = ENV['SSHOPTS'] ? Shellwords.split(ENV['SSHOPTS']) : []
-        if @remote_nix
-            run_cmd 'ssh', *ssh_opts, @build_host, *@maybe_sudo, 'env', "PATH=\"#{@remote_nix}:#{ENV['PATH']}\"", *args
-        else
-            run_cmd 'ssh', *ssh_opts, @build_host, *@maybe_sudo, *args
-        end
-    end
-end
-
-def pipe_host_cmd(*args)
-    if @build_host.nil? then
-        pipe_cmd *args
-    else
-        ssh_opts = ENV['SSHOPTS'] ? Shellwords.split(ENV['SSHOPTS']) : []
-        if @remote_nix
-            pipe_cmd 'ssh', *ssh_opts, @build_host, *@maybe_sudo, 'env', "PATH=\"#{@remote_nix}:#{ENV['PATH']}\"", *args
-        else
-            pipe_cmd 'ssh', *ssh_opts, @build_host, *@maybe_sudo, *args
-        end
-    end
-end
-
 def nix_build_flake(target)
     log_verbose "Building in flake mode."
     if derivation?(target)

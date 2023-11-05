@@ -20,9 +20,20 @@ def log_verbose(*args)
     end
 end
 
+def check_exit(*args)
+    if $?.exitstatus != 0
+        unless @verbose_script
+            $stderr.puts args.join(' ')
+        end
+        $stderr.puts "command failed #{$?.exitstatus}"
+        exit 1
+    end
+end
+
 def json_cmd(*args)
     log_verbose '$', *args
     s = IO.popen(args, 'r') { |p| p.read.strip }
+    check_exit(*args)
     JSON.parse(s) if s && !s.empty?
 end
 
@@ -38,7 +49,9 @@ def pipe_cmd(*args)
     env = args.shift if args.first.is_a? Hash
     args = args.first if args.first.is_a? Array
     log_verbose '$', *args
-    IO.popen(env || {}, args, 'r') {|p| p.read.strip }
+    ret = IO.popen(env || {}, args, 'r') {|p| p.read.strip }
+    check_exit(*args)
+    ret
 end
 
 def target_host_cmd(target_host, maybe_sudo, *args)
