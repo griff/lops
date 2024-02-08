@@ -59,6 +59,6 @@ with lib;
     "-H" config.hostname
     "-p" "${toString config.port}"
   ] ++ (with config.certificateCheck; optionals enable [
-    "-D" "${toString warningDays},${toString criticalDays}"
+    "-S" "-D" "${toString warningDays},${toString criticalDays}"
   ]);
 }
