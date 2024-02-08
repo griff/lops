@@ -85,6 +85,8 @@ while !ARGV.empty?
         @system = ARGV.shift
     when '--print-build-logs'
         @extra_build_args << i
+    when '-L'
+        @extra_build_args << i
     when '--log-format'
         @extra_build_args << i << ARGV.shift
     when /^--[a-zA-Z]/
