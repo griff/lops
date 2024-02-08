@@ -1,6 +1,6 @@
 #!/bin/ruby
 
-local_libexec = File.join(File.dirname(__FILE__), '../libexec');
+local_libexec = File.join("@out@", 'libexec');
 ENV['PATH'] = "#{ENV['PATH']}:#{local_libexec}"
 
 def usage
