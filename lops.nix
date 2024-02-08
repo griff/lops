@@ -21,5 +21,5 @@ stdenv.mkDerivation {
     cp -r $src/lib "$out/share/lops/"
 
   '';
-  path = lib.makeBinPath [ openssh nix check-health ];
+  path = lib.makeBinPath [ ruby openssh nix check-health ];
 }
