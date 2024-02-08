@@ -39,15 +39,15 @@ end
 
 # Run a command, logging it first if verbose mode is on
 def run_cmd(*args)
-    env = args.shift if args.first.is_a? Hash
-    args = args.first if args.first.is_a? Array
+    env = args.shift if args.first.is_a?(Hash)
+    args = args.first if args.first.is_a?(Array)
     log_verbose '$', *args
     system(env || {}, *args)
 end
 
 def pipe_cmd(*args)
-    env = args.shift if args.first.is_a? Hash
-    args = args.first if args.first.is_a? Array
+    env = args.shift if args.first.is_a?(Hash)
+    args = args.first if args.first.is_a?(Array)
     log_verbose '$', *args
     ret = IO.popen(env || {}, args, 'r') {|p| p.read.strip }
     check_exit(*args)
@@ -55,7 +55,7 @@ def pipe_cmd(*args)
 end
 
 def target_host_cmd(target_host, maybe_sudo, *args)
-    env = if target_host.is_a? Hash
+    env = if target_host.is_a?(Hash)
       e = target_host
       target_host = maybe_sudo
       maybe_sudo = args.shift
@@ -63,7 +63,7 @@ def target_host_cmd(target_host, maybe_sudo, *args)
     else
       {}
     end
-    args = args.first if args.first.is_a? Array
+    args = args.first if args.first.is_a?(Array)
     if target_host
         ssh_opts = ENV['SSHOPTS'] ? Shellwords.split(ENV['SSHOPTS']) : []
         if @remote_nix
@@ -77,8 +77,8 @@ def target_host_cmd(target_host, maybe_sudo, *args)
 end
 
 def build_host_cmd(build_host, maybe_sudo, *args)
-  env = args.first.is_a? Hash ? args.shift : {}
-  args = args.first if args.first.is_a? Array
+  env = args.first.is_a?(Hash) ? args.shift : {}
+  args = args.first if args.first.is_a?(Array)
 
   if build_host.nil? then
       run_cmd env, args
