@@ -28,7 +28,7 @@ def nix_build_flake(target)
     end
     if @build_host.nil?
         out_link = @out_link ? ['--out-link', @out_link] : []
-        pipe_cmd 'nix', *@flake_flags, 'build', drv, *out_link, *@extra_build_args
+        pipe_cmd 'nix', *@flake_flags, 'build', "#{drv}^*", *out_link, *@extra_build_args
         if @out_link
             puts File.readlink(@out_link)
         else
@@ -83,6 +83,10 @@ while !ARGV.empty?
         @extra_build_args << i << ARGV.shift << ARGV.shift
     when '--system'
         @system = ARGV.shift
+    when '--print-build-logs'
+        @extra_build_args << i
+    when '--log-format'
+        @extra_build_args << i << ARGV.shift
     when /^--[a-zA-Z]/
         @extra_build_args << i
         @eval_args << i

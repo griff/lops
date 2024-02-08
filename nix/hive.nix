@@ -1,5 +1,5 @@
 { nixpkgs, flake-utils }:
-{ nodes }:
+{ nodes, template ? ./.template }:
 with nixpkgs;
 rec {
   inherit nodes;
