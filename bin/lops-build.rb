@@ -40,9 +40,9 @@ def nix_build_flake(target)
         out_link = @out_link ? ['--add-root', @out_link] : []
         pipe_host_cmd 'nix-store', '-r', drv, *out_link, *@extra_build_args
         if @out_link
-            build_host_cmd 'readlink', @out_link
+            build_host_cmd @build_host, 'readlink', @out_link
         else
-            build_host_cmd 'readlink', './result'
+            build_host_cmd @build_host, 'readlink', './result'
         end
     end
 end
