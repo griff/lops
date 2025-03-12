@@ -90,11 +90,13 @@ while !ARGV.empty?
     when '--log-format'
         @extra_build_args << i << ARGV.shift
     when '--eval-store'
-        @extra_build_args << i << ARGV.shift
-        @eval_args << i << ARGV.shift
+        store = ARGV.shift
+        @extra_build_args << i << store
+        @eval_args << i << store
     when '--store'
-        @extra_build_args << i << ARGV.shift
-        @eval_args << i << ARGV.shift
+        store = ARGV.shift
+        @extra_build_args << i << store
+        @eval_args << i << store
     when /^--[a-zA-Z]/
         @extra_build_args << i
         @eval_args << i

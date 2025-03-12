@@ -19,9 +19,11 @@ while !ARGV.empty?
     when '--impure', '--show-trace'
         @eval_args << i
     when '--eval-store'
-        @eval_args << i << ARGV.shift
+        store = ARGV.shift
+        @eval_args << i << store
     when '--store'
-        @eval_args << i << ARGV.shift
+        store = ARGV.shift
+        @eval_args << i << store
     when '--verbose', '-v'
         @verbose_script = true
     when '-vv', '-vvv', '-vvvv', '-vvvvv', '-vvvvvv'
