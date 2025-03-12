@@ -1,4 +1,4 @@
-{stdenv, lib, ruby, openssh, nix, check-health}:
+{stdenv, lib, ruby, openssh, nix, nix-output-monitor, check-health}:
 stdenv.mkDerivation {
   name = "lops";
   src = ./.;
@@ -21,5 +21,5 @@ stdenv.mkDerivation {
     cp -r $src/lib "$out/share/lops/"
 
   '';
-  path = lib.makeBinPath [ ruby openssh nix check-health ];
+  path = lib.makeBinPath [ ruby openssh nix nix-output-monitor check-health ];
 }

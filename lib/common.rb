@@ -1,3 +1,6 @@
+require 'open3'
+require 'thread'
+
 def derivation?(fname)
     File.file?(fname) &&
         File.extname(fname) == '.drv'
@@ -20,14 +23,17 @@ def log_verbose(*args)
     end
 end
 
-def check_exit(*args)
-    if $?.exitstatus != 0
+def log_exit(exitstatus, *args)
+    if exitstatus != 0
         unless @verbose_script
             $stderr.puts args.join(' ')
         end
         $stderr.puts "command failed #{$?.exitstatus}"
         exit 1
     end
+end
+def check_exit(*args)
+    log_exit $?, *args
 end
 
 def json_cmd(*args)
@@ -51,6 +57,38 @@ def pipe_cmd(*args)
     log_verbose '$', *args
     ret = IO.popen(env || {}, args, 'r') {|p| p.read.strip }
     check_exit(*args)
+    ret
+end
+
+def pipe_nom(*args)
+    env = args.shift if args.first.is_a?(Hash)
+    args = args.first if args.first.is_a?(Array)
+    log_verbose '$', *args
+    ret = ""
+    exitstatus = -1
+    Open3.popen3(*args) do |_stdin, stdout, stderr, wait_thr|
+        stdout_thread = Thread.new do
+            ret << stdout.read.strip
+        end
+
+        # Pipe stderr to nix-output-monitor and then to stderr concurrently
+        Open3.popen3('nom', '--json') do |nom_stdin, nom_stdout, nom_stderr, _nom_wait_thr|
+          threads = []
+          threads << Thread.new do
+            stderr.each_line { |line| nom_stdin.puts(line) }
+            nom_stdin.close
+          end
+          threads << Thread.new do
+            nom_stdout.each_line { |line| STDOUT.puts(line) }
+          end
+          threads << Thread.new do
+            nom_stderr.each_line { |line| STDERR.puts(line) }
+          end
+          threads.each(&:join)
+        end
+        exitstatus = wait_thr.value
+    end
+    log_exit exitstatus, *args
     ret
 end
 

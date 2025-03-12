@@ -28,7 +28,11 @@ def nix_build_flake(target)
     end
     if @build_host.nil?
         out_link = @out_link ? ['--out-link', @out_link] : []
-        pipe_cmd 'nix', *@flake_flags, 'build', "#{drv}^*", *out_link, *@extra_build_args
+        if @log_format == 'nom'
+            pipe_nom 'nix', *@flake_flags, 'build', "#{drv}^*", *out_link, '--log-format', 'internal-json', *@extra_build_args
+        else
+            pipe_cmd 'nix', *@flake_flags, 'build', "#{drv}^*", *out_link, '--log-format', @log_format, *@extra_build_args
+        end
         if @out_link
             puts File.readlink(@out_link)
         else
@@ -59,11 +63,14 @@ ENV['PATH'] = "@path@:#{ENV['PATH']}"
 @extra_build_args = []
 @eval_args = []
 @target = nil
+@log_format = 'nom'
 while !ARGV.empty?
     i = ARGV.shift
     case i
     when '--help'
         show_syntax
+    when '--log-format'
+        @log_format = ARGV.shift
     when '--verbose', '-v'
         @verbose_script = true
         @eval_args << i
