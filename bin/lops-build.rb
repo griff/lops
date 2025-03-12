@@ -97,7 +97,7 @@ while !ARGV.empty?
         @eval_args << i
     else
         if @target
-            $std.err.puts "Unknown option #{i}"
+            $stderr.puts "Unknown option #{i}"
             exit 1
         end
         @target = i
