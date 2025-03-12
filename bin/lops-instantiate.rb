@@ -18,6 +18,10 @@ while !ARGV.empty?
         on_filter = ARGV.shift.split(',').to_set
     when '--impure', '--show-trace'
         @eval_args << i
+    when '--eval-store'
+        @eval_args << i << ARGV.shift
+    when '--store'
+        @eval_args << i << ARGV.shift
     when '--verbose', '-v'
         @verbose_script = true
     when '-vv', '-vvv', '-vvvv', '-vvvvv', '-vvvvvv'
