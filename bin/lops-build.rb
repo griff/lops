@@ -16,13 +16,13 @@ def nix_build_flake(target)
         on = @on ? ['--on', @on.join(',')] : []
         sys = @system ? ['--system', @system] : []
         local = File.join(File.dirname(__FILE__), 'lops-instantiate');
-        if File.exists?(local)
+        if File.exist?(local)
             drv=pipe_cmd('ruby', local, *sys, *on, *@eval_args, target)
         else
             drv=pipe_cmd('lops-instantiate', *sys, *on, *@eval_args, target)
         end
     end
-    unless File.exists?(drv)
+    unless File.exist?(drv)
         $stderr.puts "nix eval failed"
         exit 1
     end

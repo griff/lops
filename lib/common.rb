@@ -9,7 +9,7 @@ def json?(fname)
 end
 
 def built?(fname)
-    Dir.exists?(fname) &&
+    Dir.exist?(fname) &&
         File.file?(File.join(fname, "info.json"))
 end
 

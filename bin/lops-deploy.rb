@@ -12,7 +12,7 @@ def build(target)
   on = @on ? ['--on', @on.join(',')] : []
   sys = @system ? ['--system', @system] : []
   local = File.join(File.dirname(__FILE__), 'lops-build');
-  if File.exists?(local)
+  if File.exist?(local)
       pipe_cmd('ruby', local, *sys, *on, *@build_args, target)
   else
       pipe_cmd('lops-build', *sys, *on, *@build_args, target)
@@ -92,7 +92,7 @@ show_syntax unless action
 target = "/nix/var/nix/gcroots/per-user/cache/#{options[:branch]}" unless target
 
 unless options[:rollback]
-  unless File.exists?(target)
+  unless File.exist?(target)
     $stderr.puts "Target '#{target}' must exist"
     show_syntax
   end
@@ -144,7 +144,7 @@ unless options[:rollback]
           $stderr.puts "warning: error(s) occurred while switching to the new configuration"
           exit 1
         end
-        if File.exists?(File.join(path_to_config, 'health-checks.json'))
+        if File.exist?(File.join(path_to_config, 'health-checks.json'))
             run_cmd 'check-health', '--target-host', target_host, File.join(path_to_config, 'health-checks.json')
         end
       end
