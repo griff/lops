@@ -1,58 +1,76 @@
 {
   "nodes": {
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems"
-      },
+    "dried-nix-flakes": {
       "locked": {
-        "lastModified": 1694529238,
-        "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "ff7b65b44d01cf9ba6a71320833626af21126384",
+        "lastModified": 1756139350,
+        "narHash": "sha256-pObQv94NclXVXjJV8sTiKwFes4fGEWpkNzDsXw5DqnY=",
+        "owner": "cyberus-technology",
+        "repo": "dried-nix-flakes",
+        "rev": "1b2ba62710c6c1d9eba0e8e3adc029cc2e9291a4",
         "type": "github"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "owner": "cyberus-technology",
+        "repo": "dried-nix-flakes",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1694937365,
-        "narHash": "sha256-iHZSGrb9gVpZRR4B2ishUN/1LRKWtSHZNO37C8z1SmA=",
+        "lastModified": 1757020766,
+        "narHash": "sha256-PLoSjHRa2bUbi1x9HoXgTx2AiuzNXs54c8omhadyvp0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5d017a8822e0907fb96f7700a319f9fe2434de02",
+        "rev": "fe83bbdde2ccdc2cb9573aa846abe8363f79a97a",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-23.05",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "root": {
       "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "dried-nix-flakes": "dried-nix-flakes",
+        "nixpkgs": "nixpkgs",
+        "sprinkles": "sprinkles",
+        "sprinkles-utils": "sprinkles-utils"
       }
     },
-    "systems": {
+    "sprinkles": {
+      "flake": false,
       "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
+        "lastModified": 1756180715,
+        "narHash": "sha256-0nXFeLrjz0zTt4QRd5EouAlC2Bl6JFHydKqB+oe97Zc=",
+        "ref": "v1",
+        "rev": "73fc40e9c2af5a8d3dfe7f6b67776b039188a2b6",
+        "revCount": 11,
+        "type": "git",
+        "url": "https://git.afnix.fr/sprinkles/sprinkles.git"
       },
       "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
+        "ref": "v1",
+        "type": "git",
+        "url": "https://git.afnix.fr/sprinkles/sprinkles.git"
+      }
+    },
+    "sprinkles-utils": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784033024,
+        "narHash": "sha256-Qg2JboyjgU6EpF+Gvq3A41ZUCvmB8T/dt9lo8a/iGy8=",
+        "ref": "main",
+        "rev": "e0e748baa8cba9fddc0066c365cdb89523743276",
+        "revCount": 1,
+        "type": "git",
+        "url": "https://codeberg.org/griff79/sprinkles-utils"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "https://codeberg.org/griff79/sprinkles-utils"
       }
     }
   },
