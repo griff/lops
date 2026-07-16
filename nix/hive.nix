@@ -1,5 +1,4 @@
 { pkgs, lib, nodes, template ? ./.template }:
-with nixpkgs;
 rec {
   inherit nodes;
   toplevel =         lib.mapAttrs (_: v: v.config.system.build.toplevel) nodes;
