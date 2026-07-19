@@ -157,8 +157,8 @@ def copy_to_target(target_host, build_host, path)
   end
 end
 
-def nix_eval(url, expr)
-    full_expr = "with builtins; let lopsHive = (getFlake \"#{url}\").lopsHive; in #{expr}"
+def nix_eval(url, system, expr)
+    full_expr = "with builtins; let lopsHive = (getFlake \"#{url}\").lopsHive.#{system}; in #{expr}"
     args = ['nix-instantiate'] + @flake_args + ['--pure-eval', '--eval', '--strict', '--read-write-mode'] + @eval_args + ['-E', full_expr]
     j = json_cmd(*args)
     exit 1 unless j

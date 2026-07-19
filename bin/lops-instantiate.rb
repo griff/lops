@@ -48,16 +48,16 @@ metadata = json_cmd('nix', 'flake', 'metadata', *@flake_args, @target)
 exit 1 unless metadata
 url = metadata['url']
 
-node_names = nix_eval url, "attrNames lopsHive.nodes"
+node_names = nix_eval url, @system, "attrNames lopsHive.nodes"
 node_names = node_names.select {|name| on_filter.include? name } if on_filter
-info = nix_eval url, "lopsHive.deploymentConfig"
+info = nix_eval url, @system, "lopsHive.deploymentConfig"
 #pp node_names
 #pp info
 
 names = nix_quote JSON.generate(node_names)
-drv_paths = nix_eval url, "lopsHive.evalSelectedDrvPaths (fromJSON #{names})"
+drv_paths = nix_eval url, @system, "lopsHive.evalSelectedDrvPaths (fromJSON #{names})"
 #pp drv_paths
 all_paths = nix_quote JSON.generate(drv_paths)
 @eval_args << '--impure'
-all_imported = nix_eval url, "(lopsHive.importMachines (fromJSON #{all_paths})).#{@system}.drvPath"
+all_imported = nix_eval url, @system, "(lopsHive.importMachines (fromJSON #{all_paths})).drvPath"
 puts all_imported
