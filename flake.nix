@@ -10,8 +10,8 @@
   outputs =
     inputs:
     inputs.dried-nix-flakes inputs (
-      { nixpkgs, ... }:
-      ((import ./default.nix { }).override { input = _: { nixpkgs = nixpkgs.legacyPackages; }; }).output
+      { nixpkgs, import, ... }:
+      ((import ./default.nix).override { input = _: { nixpkgs = nixpkgs.legacyPackages; }; }).output
     );
   /*
   outputs = { self, flake-utils, nixpkgs, ... }: {
