@@ -21,6 +21,7 @@ bootstrap.new (self: {
   };
 
   output = {
+    nixosModules.default = with self.output.nixosModules; { imports = [deployment healthchecks]; };
     nixosModules.deployment = import ./nix/deployment.nix;
     nixosModules.healthchecks = import ./nix/healthchecks;
     lib.hive = import ./nix/hive.nix;
